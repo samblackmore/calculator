@@ -17,6 +17,7 @@ buttons.forEach(function(value) {
   calculator.appendChild(button);
 });
 
-function buttonClick(button) {
-  alert(button);
+function buttonClick(value) {
+  var display = document.getElementById('display');
+  display.innerHTML = value;
 }
