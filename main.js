@@ -52,7 +52,7 @@ function buttonClick(value) {
 
   // If we pressed Clear...
   if (value === 'C') {
-    display.innerHTML = initialMessage;
+    display.innerHTML = 0;
     return;
   }
 
