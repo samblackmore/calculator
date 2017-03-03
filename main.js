@@ -1,4 +1,5 @@
 var buttons = [];
+var initialMessage = document.getElementById('display').textContent;
 
 // ASCII codes for all the buttons on our calculator
 // plus a pesky comma
@@ -6,6 +7,7 @@ for (var i = 40; i <= 57; i++) {
     buttons.push(String.fromCharCode(i));
 }
 buttons.splice(buttons.indexOf(','), 1);
+buttons.push('C');
 buttons = buttons.reverse();
 
 buttons.forEach(function(value) {
@@ -18,6 +20,14 @@ buttons.forEach(function(value) {
 });
 
 function buttonClick(value) {
-  var display = document.getElementById('display');
-  display.innerHTML = value;
+  var formula = document.getElementById('display').textContent;
+  if (value === 'C') {
+    display.innerHTML = initialMessage;
+    return;
+  }
+  // If we didn't press Clear...
+  if (formula === initialMessage)
+    display.innerHTML = value;
+  else
+    display.innerHTML = formula + value;
 }
