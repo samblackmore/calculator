@@ -27,6 +27,23 @@ function isNumber(char) {
   return found(numbers, char);
 }
 
+function stripLastChar(newChar, lastChar, penultimateChar) {
+  // Operator followed by another operator - choose the latest
+  if (isOperator(lastChar) && isOperator(newChar))
+    return true;
+
+  // If zero followed by a number, we can potentially remove the zero...
+  if (lastChar === '0' && isNumber(newChar)
+    /* If the zero was not preceded by a number:
+       e.g. +0 followed by 1 becomes +1  (remove the zero)
+       and   0 followed by 1 becomes 1   (remove the zero)
+       but  10 followed by 1 becomes 101 (keep the zero)*/
+    && (!isNumber(penultimateChar) || penultimateChar == ''))
+    return true;
+
+  return false;
+}
+
 function buttonClick(value) {
   var formula = document.getElementById('display').textContent;
   var lastCharPos = formula.length - 1;
@@ -39,16 +56,8 @@ function buttonClick(value) {
     return;
   }
 
-  // Replace the last character if...
-  // it was an operator and this is also an operator e.g. + becomes -
-  // it was a zero not following a number e.g. 01 becomes 1
-  // it was a zero on its own
-  if ((isOperator(value) && isOperator(lastChar))
-    || (lastChar === '0' && !isNumber(penultimateChar))
-    || (lastChar === '0' && penultimateChar == ''))
-    {
-      formula = formula.substring(0, lastCharPos);
-    }
+  if (stripLastChar(value, lastChar, penultimateChar))
+    formula = formula.substring(0, lastCharPos);
 
   display.innerHTML = formula + value;
 }
