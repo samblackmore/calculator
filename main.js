@@ -1,15 +1,10 @@
-var buttons = [];
+var numbers = [0,1,2,3,4,5,6,7,8,9].map(function(n) {return String(n)}).reverse();
 var operators = ['+','-','*','/'];
-var numbers = [0,1,2,3,4,5,6,7,8,9].map(function(n) {return String(n)});
-
-// ASCII codes for all the buttons on our calculator
-// plus a pesky comma
-for (var i = 40; i <= 57; i++) {
-    buttons.push(String.fromCharCode(i));
-}
-buttons.splice(buttons.indexOf(','), 1);
+var brackets = ['(', ')'];
+var decimal = '.';
+var buttons = numbers.concat(operators).concat(brackets);
+buttons.push(decimal);
 buttons.push('C');
-buttons = buttons.reverse();
 
 buttons.forEach(function(value) {
   var calculator = document.getElementById('calculator');
