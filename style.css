@@ -1,7 +1,24 @@
 #display {
   margin: 10px;
+  margin-bottom: 40px;
   padding: 20px;
+  font-size: 200%;
   font-family: monospace;
   background-color: gray;
   color: white;
+}
+
+#calculator {
+  margin: 30px;
+  padding: 30px;
+  background-color: gainsboro;
+  width: 300px;
+}
+
+button {
+  color: dimgray;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px;
+  padding: 20px;
 }
