@@ -83,12 +83,20 @@ function resolve(formula) {
     return resolver(formula, '-');
 }
 
+function toInt(n) {
+  if (typeof n === 'number')
+    return n;
+  if (found(n, '.'))
+    return parseFloat(n);
+  return parseInt(n);
+}
+
 function evaluate(operator, lhs, rhs) {
   console.log('Evaluating (' + lhs + ') ' + operator + ' (' + rhs + ')');
   if (!needToResolve(lhs) && !needToResolve(rhs)) {
     var solution;
-    lhs = parseInt(lhs);
-    rhs = parseInt(rhs);
+    lhs = toInt(lhs);
+    rhs = toInt(rhs);
     switch (operator) {
       case '*': solution = lhs * rhs; break;
       case '/': solution = lhs / rhs; break;
