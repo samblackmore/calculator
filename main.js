@@ -123,8 +123,18 @@ function parseFormula(string) {
   return result;
 }
 
+function log(string) {
+  console.log(string);
+  var br = document.createElement('br'),
+      text = document.createTextNode(string),
+      cons = document.getElementById('console');
+  cons.appendChild(br);
+  cons.appendChild(text);
+}
+
 function solver(arr, operator) {
   while (found(arr, operator)) {
+    log(arr.join(''));
     var pos = arr.indexOf(operator);
     arr[pos] = evaluate(operator, arr[pos-1], arr[pos+1]);
     delete arr[pos-1];
