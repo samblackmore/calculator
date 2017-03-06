@@ -132,13 +132,24 @@ function log(string) {
   cons.appendChild(text);
 }
 
+function logEval(arr, pos) {
+  var str = '';
+  arr.forEach(function(elem, i) {
+    if (i === pos - 1) str += '(';
+    str += elem;
+    if (i === pos + 1) str += ')';
+  });
+  log(str);
+}
+
 function solver(arr, operator) {
   while (found(arr, operator)) {
-    log(arr.join(''));
     var pos = arr.indexOf(operator);
+    logEval(arr, pos);
     arr[pos] = evaluate(operator, arr[pos-1], arr[pos+1]);
     delete arr[pos-1];
     delete arr[pos+1];
+    log(arr.join(''));
     return arr.filter(function(elem) {
       return elem != undefined;
     });
@@ -166,6 +177,7 @@ function buttonClick(value) {
   }
 
   if (value === '=') {
+    log(formula);
     display.innerHTML = solve(parseFormula(formula));
     return;
   }
