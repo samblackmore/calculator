@@ -92,23 +92,21 @@ function toInt(n) {
 }
 
 function evaluate(operator, lhs, rhs) {
-  console.log('Evaluating (' + lhs + ') ' + operator + ' (' + rhs + ')');
-  if (!needToResolve(lhs) && !needToResolve(rhs)) {
-    var solution;
-    lhs = toInt(lhs);
-    rhs = toInt(rhs);
-    switch (operator) {
-      case '*': solution = lhs * rhs; break;
-      case '/': solution = lhs / rhs; break;
-      case '+': solution = lhs + rhs; break;
-      case '-': solution = lhs - rhs; break;
-    }
-    console.log('Solution ' + solution);
-    return solution;
+  lhs = toInt(lhs);
+  rhs = toInt(rhs);
+  switch (operator) {
+    case '*': return lhs * rhs;
+    case '/': return lhs / rhs;
+    case '+': return lhs + rhs;
+    case '-': return lhs - rhs;
   }
-  var newLHS = resolve(lhs);
-  var newRHS = resolve(rhs);
-  return evaluate(operator, newLHS, newRHS);
+}
+
+function evaluateRecursive(operator, lhs, rhs) {
+  if (!needToResolve(lhs) && !needToResolve(rhs)) {
+    return evaluate(operator, lhs, rhs);
+  }
+  return evaluateRecursive(operator, resolve(lhs), resolve(rhs));
 }
 
 // Takes a string and returns an array where
