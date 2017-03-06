@@ -23,7 +23,7 @@ function found(arr, elem) {
 function isNumber(string) {
   var chars = string.split('');
   return chars.every(function(char) {
-    return found(numbers, s);
+    return found(numbers, string);
   });
 }
 
@@ -103,6 +103,40 @@ function evaluate(operator, lhs, rhs) {
   return evaluate(operator, newLHS, newRHS);
 }
 
+// Takes a string and returns an array where
+// each element is a number or an operator
+function parseFormula(string) {
+  var result = [string.charAt(0)];
+  for (var i = 1; i < string.length; i++) {
+    var char = string.charAt(i);
+    var last = string.charAt(i-1);
+    if ((char === '.' || isNumber(char)) && (last === '.' || isNumber(last)))
+      result[result.length-1] += char;
+    else result.push(char);
+  }
+  return result;
+}
+
+function solver(arr, operator) {
+  while (found(arr, operator)) {
+    var pos = arr.indexOf(operator);
+    arr[pos] = evaluate(operator, arr[pos-1], arr[pos+1]);
+    delete arr[pos-1];
+    delete arr[pos+1];
+    return arr.filter(function(elem) {
+      return elem != undefined;
+    });
+  }
+}
+
+function solve(arr) {
+  arr = solver(arr, '*');
+  arr = solver(arr, '/');
+  arr = solver(arr, '+');
+  arr = solver(arr, '-');
+  return arr;
+}
+
 function buttonClick(value) {
   var formula = document.getElementById('display').textContent;
   var lastCharPos = formula.length - 1;
@@ -116,7 +150,7 @@ function buttonClick(value) {
   }
 
   if (value === '=') {
-    display.innerHTML = resolve(formula);
+    display.innerHTML = solve(parseFormula(formula));
     return;
   }
 
