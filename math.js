@@ -56,6 +56,23 @@ function parseFormula(string) {
   });
 }
 
+function parseBrackets(string) {
+  var open, wave = 1;
+  while (found(string, '(')) {
+    console.log('Parsing phase ' + wave++);
+    for (var i = 0; i < string.length; i++) {
+      var char = string.charAt(i);
+      if (char === '(') open = i;
+      if (char === ')') {
+        var formula = string.slice(open+1, i);
+        var solution = solve(parseFormula(formula));
+        string = string.replace('(' + formula + ')', solution);
+        break;
+      }
+    }
+  }
+}
+
 function isOperator(char) {
   return found(operators, char);
 }

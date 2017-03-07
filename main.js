@@ -34,7 +34,7 @@ function buttonClick(value) {
 
   if (value === '=') {
     log(formula, cConsoleDim);
-    display.innerHTML = solve(parseFormula(formula));
+    display.innerHTML = parseBrackets(formula);
     return;
   }
 
