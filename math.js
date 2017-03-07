@@ -2,19 +2,22 @@
 function solve(arr) {
   arr = solver(arr, '*');
   arr = solver(arr, '/');
-  arr = solver(arr, '+');
-  arr = solver(arr, '-');
+  arr = solver(arr, /\+|-/);
   return arr.toString();
 }
 
 // Evaluate all occurrences of given operator
 function solver(arr, operator) {
   while (found(arr, operator)) {
-    var pos = arr.indexOf(operator);
+    var pos;
+    if (operator instanceof RegExp)
+      pos = arr.indexOf(operator.exec(arr)[0]);
+    else
+      pos = arr.indexOf(operator);
 
     log(evalString(arr, pos), cConsoleDim, evalSubString(arr, pos));
 
-    arr[pos] = evaluate(operator, arr[pos-1], arr[pos+1]);
+    arr[pos] = evaluate(arr[pos], arr[pos-1], arr[pos+1]);
     delete arr[pos-1];
     delete arr[pos+1];
 

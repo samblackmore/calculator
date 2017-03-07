@@ -50,6 +50,8 @@ function evalSubString(arr, pos) {
 }
 
 
-function found(arr, elem) {
-  return arr.indexOf(elem) != -1;
+function found(src, item) {
+  if (item instanceof RegExp)
+    return item.test(src);
+  return src.indexOf(item) != -1;
 }
