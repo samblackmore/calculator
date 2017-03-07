@@ -4,7 +4,7 @@ function solve(arr) {
   arr = solver(arr, '/');
   arr = solver(arr, '+');
   arr = solver(arr, '-');
-  return arr;
+  return arr.toString();
 }
 
 // Evaluate all occurrences of given operator
@@ -12,13 +12,13 @@ function solver(arr, operator) {
   while (found(arr, operator)) {
     var pos = arr.indexOf(operator);
 
-    log(evalString(arr, pos), cConsoleDim, /\(.+\)/);
+    log(evalString(arr, pos), cConsoleDim, evalSubString(arr, pos));
 
     arr[pos] = evaluate(operator, arr[pos-1], arr[pos+1]);
     delete arr[pos-1];
     delete arr[pos+1];
 
-    log('=' + arr.join(''), cConsoleDim, new RegExp(arr[pos]));
+    log('=' + arr.join(''), cConsoleDim, arr[pos]);
 
     arr = arr.filter(function(elem) {
       return elem != undefined;
@@ -41,6 +41,8 @@ function evaluate(operator, lhs, rhs) {
 
 // Takes a string and returns an array where each element is a number or an operator
 function parseFormula(string) {
+  if (typeof string === 'number')
+    return string;
   var result = [string.charAt(0)];
   for (var i = 1; i < string.length; i++) {
     var char = string.charAt(i);
@@ -65,12 +67,16 @@ function parseBrackets(string) {
       if (char === '(') open = i;
       if (char === ')') {
         var formula = string.slice(open+1, i);
+        log(string, cConsoleDim, '(' + formula + ')');
         var solution = solve(parseFormula(formula));
         string = string.replace('(' + formula + ')', solution);
+        log(string, cConsoleDim, solution);
         break;
       }
     }
   }
+  log('=' + solve(parseFormula(string)), 'white');
+  return solve(parseFormula(string));
 }
 
 function isOperator(char) {
