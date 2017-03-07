@@ -1,3 +1,11 @@
+// Takes a string and outputs a copy where numbers are rounded
+function formatRoundFrac(string) {
+  return parseFormula(string).map(function(elem) {
+    if (typeof elem === 'number') return roundFrac(elem);
+    else return elem;
+  }).join('');
+}
+
 // Log to the html console. If a regex is provided, highlight the regex in white
 function log(string, color, regex=null) {
   console.log(string);
@@ -15,7 +23,7 @@ function log(string, color, regex=null) {
 
   spans.forEach(function(string, i) {
     var span = document.createElement('span'),
-        text = document.createTextNode(string);
+        text = document.createTextNode(formatRoundFrac(string));
     if (i == 1) span.style.color = 'white';
     else        span.style.color = color;
     span.appendChild(text);

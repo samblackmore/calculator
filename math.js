@@ -49,7 +49,11 @@ function parseFormula(string) {
       result[result.length-1] += char;
     else result.push(char);
   }
-  return result;
+  return result.map(function(elem) {
+    if (isNumber(elem))
+      return toNumber(elem);
+    return elem;
+  });
 }
 
 function isOperator(char) {
@@ -66,4 +70,15 @@ function toNumber(n) {
   if (found(n, '.'))
     return parseFloat(n);
   return parseInt(n);
+}
+
+function roundFrac(num) {
+   /*
+   1.234 * 100  = 123.4
+   123.4 + 0.5  = 123.9
+   123.9 to int = 123
+   123 / 100    = 1.23
+   */
+   var places = 1000;
+   return parseInt(num * places + 0.5) / places;
 }
