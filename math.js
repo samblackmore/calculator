@@ -9,8 +9,6 @@ function solve(arr) {
 
 // Evaluate all occurrences of given operator
 function solver(arr, operator) {
-  if (!found(arr, operator))
-    return arr;
   while (found(arr, operator)) {
     var pos = arr.indexOf(operator);
 
@@ -26,6 +24,7 @@ function solver(arr, operator) {
       return elem != undefined;
     });
   }
+  return arr;
 }
 
 // Does the math
@@ -58,10 +57,7 @@ function isOperator(char) {
 }
 
 function isNumber(string) {
-  var chars = string.split('');
-  return chars.every(function(char) {
-    return found(numbers, string);
-  });
+  return !isNaN(parseFloat(string));
 }
 
 function toNumber(n) {
