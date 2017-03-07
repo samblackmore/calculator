@@ -16,6 +16,7 @@ buttons.forEach(function(value) {
   var button = document.createElement('button');
   var text = document.createTextNode(value);
   button.appendChild(text);
+  button.className = 'button';
   button.setAttribute('onclick', 'buttonClick("' + value + '")');
   calculator.appendChild(button);
 });
