@@ -6,6 +6,7 @@
   font-family: monospace;
   background-color: gray;
   color: white;
+  overflow-wrap: break-word;
 }
 
 #calculator {
