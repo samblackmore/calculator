@@ -4,6 +4,7 @@ var cConsoleDim = '#afcfaf',
     operators = ['*','/','+','-'],
     brackets = ['(', ')'],
     decimal = '.',
+    solved = false,
     buttons = numbers.concat(operators).concat(brackets);
 
 buttons.push(decimal);
@@ -22,10 +23,17 @@ buttons.forEach(function(value) {
 });
 
 function buttonClick(value) {
+  var cons = document.getElementById('console');
   var formula = document.getElementById('display').textContent;
   var lastCharPos = formula.length - 1;
   var lastChar = formula.charAt(lastCharPos);
   var penultimateChar = formula.charAt(lastCharPos - 1);
+
+  if (solved) {
+    formula = '';
+    cons.innerHTML = 'hi';
+    solved = false;
+  }
 
   // If we pressed Clear...
   if (value === 'C') {
@@ -35,7 +43,9 @@ function buttonClick(value) {
 
   if (value === '=') {
     log(formula, cConsoleDim);
+    cons.innerHTML = null;
     display.innerHTML = parseBrackets(formula);
+    solved = true;
     return;
   }
 
