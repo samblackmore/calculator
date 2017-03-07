@@ -9,6 +9,8 @@ function solve(arr) {
 
 // Evaluate all occurrences of given operator
 function solver(arr, operator) {
+  if (!found(arr, operator))
+    return arr;
   while (found(arr, operator)) {
     var pos = arr.indexOf(operator);
 
@@ -20,7 +22,7 @@ function solver(arr, operator) {
 
     log('=' + arr.join(''), cConsoleDim, new RegExp(arr[pos]));
 
-    return arr.filter(function(elem) {
+    arr = arr.filter(function(elem) {
       return elem != undefined;
     });
   }
