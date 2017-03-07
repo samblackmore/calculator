@@ -1,3 +1,4 @@
+var cConsoleDim = '#afcfaf';
 var numbers = [0,1,2,3,4,5,6,7,8,9].map(function(n) {return String(n)}).reverse();
 var operators = ['*','/','+','-'];
 var brackets = ['(', ')'];
@@ -123,33 +124,49 @@ function parseFormula(string) {
   return result;
 }
 
-function log(string) {
+// Log to the html console. If a regex is provided, highlight the regex in white
+function log(string, color, regex=null) {
   console.log(string);
-  var br = document.createElement('br'),
-      text = document.createTextNode(string),
+  var spans = [],
+      br = document.createElement('br'),
       cons = document.getElementById('console');
+
+  if (regex === null)
+    spans.push(string);
+  else {
+    spans.push(string.split(regex)[0]);
+    spans.push(regex.exec(string)[0]);
+    spans.push(string.split(regex)[1]);
+  }
+
+  spans.forEach(function(string, i) {
+    var span = document.createElement('span'),
+        text = document.createTextNode(string);
+    if (i == 1) span.style.color = 'white';
+    else        span.style.color = color;
+    span.appendChild(text);
+    cons.appendChild(span);
+  });
+
   cons.appendChild(br);
-  cons.appendChild(text);
 }
 
-function logEval(arr, pos) {
-  var str = '';
-  arr.forEach(function(elem, i) {
-    if (i === pos - 1) str += '(';
-    str += elem;
-    if (i === pos + 1) str += ')';
-  });
-  log(str);
+// Takes an evaluation and outputs string with brackets around operation
+function evalString(arr, pos) {
+  var copy = arr.slice();
+  copy[pos-1] = '(' + copy[pos-1];
+  copy[pos+1] += ')';
+  return copy.join('');
 }
 
 function solver(arr, operator) {
   while (found(arr, operator)) {
     var pos = arr.indexOf(operator);
-    logEval(arr, pos);
+    log(evalString(arr, pos), cConsoleDim, /\(.+\)/);
     arr[pos] = evaluate(operator, arr[pos-1], arr[pos+1]);
     delete arr[pos-1];
     delete arr[pos+1];
-    log(arr.join(''));
+    log('=' + arr.join(''), cConsoleDim, new RegExp(arr[pos]));
     return arr.filter(function(elem) {
       return elem != undefined;
     });
@@ -177,7 +194,7 @@ function buttonClick(value) {
   }
 
   if (value === '=') {
-    log(formula);
+    log(formula, cConsoleDim);
     display.innerHTML = solve(parseFormula(formula));
     return;
   }

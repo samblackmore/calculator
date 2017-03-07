@@ -23,12 +23,12 @@
   display: inline-block;
   font-family: monospace;
   font-size: 120%;
-  letter-spacing: 5px;
+  letter-spacing: 3px;
   line-height: 200%;
   color: white;
   padding: 30px;
-  text-align: center;
-  background-color: darkseagreen;
+  text-align: right;
+  background-color: #80b380;
 }
 
 button {
