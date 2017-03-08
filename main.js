@@ -37,6 +37,7 @@ function testClick(value) {
   var display = document.getElementById('display');
   cons.innerHTML = 'press equals';
   display.innerHTML = value;
+  solved = false;
 }
 
 function buttonClick(value) {

@@ -16,13 +16,19 @@ function solver(arr, operator) {
     else
       pos = arr.indexOf(operator);
 
-    log(evalString(arr, pos), cConsoleDim, evalSubString(arr, pos));
+    log(arr, cConsoleDim, pos);
 
     arr[pos] = evaluate(arr[pos], arr[pos-1], arr[pos+1]);
     delete arr[pos-1];
     delete arr[pos+1];
 
-    log('=' + arr.join(''), cConsoleDim, arr[pos]);
+    var copy = arr.slice('');
+    copy.unshift('=');
+    copy = copy.filter(function(elem) {
+      return elem != undefined;
+    });
+
+    log(copy, cConsoleDim, pos);
 
     arr = arr.filter(function(elem) {
       return elem != undefined;
