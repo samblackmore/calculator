@@ -1,5 +1,6 @@
 // Takes a string and outputs a copy where numbers are rounded
 function formatRoundFrac(string) {
+  if (!string.length) return string;
   return parseFormula(String(string)).map(function(elem) {
     if (typeof elem === 'number') return roundFrac(elem);
     else return elem;

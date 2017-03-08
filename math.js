@@ -44,7 +44,7 @@ function evaluate(operator, lhs, rhs) {
 
 // Takes a string and returns an array where each element is a number or an operator
 function parseFormula(string) {
-  if (typeof string === 'number')
+  if (typeof string === 'number' || !string.length)
     return string;
   var result = [string.charAt(0)];
   for (var i = 1; i < string.length; i++) {
@@ -61,28 +61,52 @@ function parseFormula(string) {
   });
 }
 
+// Returns whether there is an open bracket followed by a close
+function bracketsToParse(string) {
+  var open = false;
+  for (var i = 0; i < string.length; i++) {
+    var c = string.charAt(i);
+    if (c === '(') open = true;
+    if (c === ')' && open) return true;
+  }
+  return false;
+}
+
 function parseBrackets(string) {
+  // Before starting, check equal number of brackets
   if (getOccurrences(string, /\(/) !== getOccurrences(string, /\)/))
     throw {
       name: 'UnequalBracketsError',
       message: 'Please provide an equal number of opening and closing brackets'
     }
-  var open, wave = 1;
-  while (found(string, '(')) {
-    console.log('Parsing phase ' + wave++);
+  var open;
+  while (bracketsToParse(string)) {
     for (var i = 0; i < string.length; i++) {
       var char = string.charAt(i);
       if (char === '(') open = i;
-      if (char === ')') {
-        var formula = string.slice(open+1, i);
-        log(string, cConsoleDim, '(' + formula + ')');
-        var solution = solve(parseFormula(formula));
-        string = string.replace('(' + formula + ')', solution);
+      if (char === ')' && open) {
+        var formula = string.slice(open+1, i),        // String between brackets
+            unsolved = '(' + formula + ')';
+        if (!formula) {                               // Handle empty brackets
+          formula = '0';
+          unsolved = '(0)';
+          string = string.replace('()', '(0)');
+        }
+        log(string, cConsoleDim, unsolved);
+        var solution = solve(parseFormula(formula));      // Solve it
+        string = string.replace(unsolved, solution);  // Insert into main string
         log(string, cConsoleDim, solution);
         break;
       }
     }
   }
+  // If brackets still found after solving
+  if (found(string, '(') || found(string, ')'))
+    throw {
+      name: 'BracketsNotClosedError',
+      message: "Remaining brackets didn't make sense"
+    }
+  // Success
   log('=' + solve(parseFormula(string)), 'white');
   return solve(parseFormula(string));
 }
