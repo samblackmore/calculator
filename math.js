@@ -2,7 +2,7 @@
 function solve(arr) {
   arr = solver(arr, '*');
   arr = solver(arr, '/');
-  arr = solver(arr, /\+|-/);
+  arr = solver(arr, ['+', '-']);
   if (!arr.length) return 0;
   return arr;
 }
@@ -11,10 +11,10 @@ function solve(arr) {
 function solver(arr, operator) {
   while (found(arr, operator)) {
     var pos;
-    if (operator instanceof RegExp)
-      pos = arr.indexOf(operator.exec(arr)[0]);
-    else
-      pos = arr.indexOf(operator);
+    if (operator instanceof Object) {             // If array of operators
+      var foundOperator = findCommonElement(arr, operator);
+      pos = arr.indexOf(foundOperator);
+    } else pos = arr.indexOf(operator);
 
     log(arr, cConsoleDim, pos);
 

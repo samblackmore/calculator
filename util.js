@@ -90,7 +90,22 @@ function evalSubString(arr, pos) {
 function found(src, item) {
   if (item instanceof RegExp)
     return item.test(src);
+  if (item instanceof Object)
+    return item.some(function(subItem) {
+      return src.indexOf(subItem) != -1;
+    });
   return src.indexOf(item) != -1;
+}
+
+// Finds an element shared between 2 arrays
+function findCommonElement(arr1, arr2) {
+  for (var i = 0; i < arr1.length; i++) {
+    for (var j = 0; j < arr2.length; j++) {
+      if (arr1[i] === arr2[j])
+        return arr1[i];
+    }
+  }
+  return false;
 }
 
 function getOccurrences(arr, match) {
