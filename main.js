@@ -25,9 +25,6 @@ buttons.forEach(function(value) {
 function buttonClick(value) {
   var cons = document.getElementById('console');
   var formula = document.getElementById('display').textContent;
-  var lastCharPos = formula.length - 1;
-  var lastChar = formula.charAt(lastCharPos);
-  var penultimateChar = formula.charAt(lastCharPos - 1);
 
   if (solved) {
     formula = '';
@@ -53,8 +50,8 @@ function buttonClick(value) {
 
   // If we pressed number or operator
   else {
-    if (replaceLastChar(value, lastChar, penultimateChar))
-      formula = formula.substring(0, lastCharPos);
+    if (replaceLastChar(formula, value))
+      formula = formula.substring(0, formula.length - 1);
 
     display.innerHTML = formula + value;
   }
