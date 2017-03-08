@@ -49,9 +49,16 @@ function evalSubString(arr, pos) {
   return String(copy[pos-1] + copy[pos] + copy[pos+1]);
 }
 
-
 function found(src, item) {
   if (item instanceof RegExp)
     return item.test(src);
   return src.indexOf(item) != -1;
+}
+
+function getOccurrences(string, regex) {
+  regex = new RegExp(regex, 'g');
+  if (string.match(regex))
+    return string.match(regex).length;
+  else
+    return 0;
 }

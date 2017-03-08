@@ -62,6 +62,11 @@ function parseFormula(string) {
 }
 
 function parseBrackets(string) {
+  if (getOccurrences(string, /\(/) !== getOccurrences(string, /\)/))
+    throw {
+      name: 'UnequalBracketsError',
+      message: 'Please provide an equal number of opening and closing brackets'
+    }
   var open, wave = 1;
   while (found(string, '(')) {
     console.log('Parsing phase ' + wave++);

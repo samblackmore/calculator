@@ -36,21 +36,26 @@ function buttonClick(value) {
   }
 
   // If we pressed Clear...
-  if (value === 'C') {
+  if (value === 'C')
     display.innerHTML = 0;
-    return;
-  }
 
-  if (value === '=') {
+  else if (value === '=') {
     log(formula, cConsoleDim);
-    cons.innerHTML = null;
-    display.innerHTML = parseBrackets(formula);
-    solved = true;
-    return;
+    try {
+      cons.innerHTML = null;
+      display.innerHTML = parseBrackets(formula);
+      solved = true;
+    } catch (e) {
+      cons.innerHTML = e.message;
+      throw e;
+    }
   }
 
-  if (replaceLastChar(value, lastChar, penultimateChar))
-    formula = formula.substring(0, lastCharPos);
+  // If we pressed number or operator
+  else {
+    if (replaceLastChar(value, lastChar, penultimateChar))
+      formula = formula.substring(0, lastCharPos);
 
-  display.innerHTML = formula + value;
+    display.innerHTML = formula + value;
+  }
 }
