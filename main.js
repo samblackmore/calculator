@@ -22,6 +22,23 @@ buttons.forEach(function(value) {
   calculator.appendChild(button);
 });
 
+testInputs.forEach(function(value) {
+  var container = document.getElementById('test-container');
+  var button = document.createElement('button');
+  var text = document.createTextNode(value);
+  button.appendChild(text);
+  button.className = 'test';
+  button.setAttribute('onclick', 'testClick("' + value + '")');
+  container.appendChild(button);
+});
+
+function testClick(value) {
+  var cons = document.getElementById('console');
+  var display = document.getElementById('display');
+  cons.innerHTML = 'press equals';
+  display.innerHTML = value;
+}
+
 function buttonClick(value) {
   var cons = document.getElementById('console');
   var formula = document.getElementById('display').textContent;

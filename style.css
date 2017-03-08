@@ -21,6 +21,28 @@
   box-shadow: 0 30px #bbb;
 }
 
+#test-container {
+  margin: 30px;
+  padding: 30px;
+  border-radius: 20px;
+  background-color: antiquewhite;
+  font-family: monospace;
+}
+
+.test {
+  padding: 10px;
+  margin: 10px;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #ff9f80;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 5px #ffc6b3;
+  font-size: 150%;
+}
+
 #console {
   display: inline-block;
   font-family: monospace;
@@ -50,6 +72,7 @@ button {
   border: none;
   border-radius: 5px;
   box-shadow: 0 5px #bbb;
+  font-size: 120%;
 }
 
 .button:hover {background-color: aquamarine}
