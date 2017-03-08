@@ -27,7 +27,7 @@ function buttonClick(value) {
   var formula = document.getElementById('display').textContent;
 
   if (solved) {
-    formula = '';
+    formula = '0';
     cons.innerHTML = 'hi';
     solved = false;
   }
@@ -48,7 +48,7 @@ function buttonClick(value) {
     }
   }
 
-  // If we pressed number or operator
+  // If we pressed number, operator, decimal or brackets
   else {
     if (replaceLastChar(formula, value))
       formula = formula.substring(0, formula.length - 1);
