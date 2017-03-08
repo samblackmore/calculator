@@ -37,13 +37,13 @@ function buttonClick(value) {
     display.innerHTML = 0;
 
   else if (value === '=') {
-    log(formula, cConsoleDim);
     try {
       cons.innerHTML = null;
-      display.innerHTML = parseBrackets(formula);
+      log(formula, cConsoleDim);
+      display.innerHTML = parseBrackets(parseFormula(formula));
       solved = true;
     } catch (e) {
-      cons.innerHTML = e.message;
+      cons.innerHTML += e.message;
       throw e;
     }
   }

@@ -1,32 +1,69 @@
-// Takes a string and outputs a copy where numbers are rounded
-function formatRoundFrac(string) {
-  if (!string.length) return string;
-  return parseFormula(String(string)).map(function(elem) {
+// Takes an array and outputs a string where numbers are rounded
+function formatRoundFrac(arr) {
+  return arr.map(function(elem) {
     if (typeof elem === 'number') return roundFrac(elem);
     else return elem;
   }).join('');
 }
 
-// Log to the html console, highlight text in white if provided
-function log(string, color, highlight=null) {
-  console.log(string);
+// Log to the html console, highlight elements in white if provided (start & end)
+function log(arr, color, start=null, end=null) {
   var spans = [],
       br = document.createElement('br'),
       cons = document.getElementById('console');
 
-  if (highlight === null)
-    spans.push(string);
+  if (typeof arr === 'string')
+    arr = arr.split('');
+
+  console.log(arr.join(''));
+
+  // If no highlighting
+  if (start === null)
+    spans.push({
+        text: arr.join(''),
+        color: color
+      });
+  // If highlighting one element
+  else if (end === null) {
+    spans.push({
+      text: arr.slice(0, start).join(''),
+      color: color
+    });
+    spans.push({
+      text: arr[start],
+      color: 'white'
+    });
+    spans.push({
+      text: arr.slice(start+1, arr.length),
+      color: color
+    });
+  }
+  // If highlighting a range
   else {
-    spans.push(string.split(highlight)[0]);
-    spans.push(highlight);
-    spans.push(string.split(highlight)[1]);
+    spans.push({
+      text: arr.slice(0, start).join(''),
+      color: color
+    });
+    spans.push({
+      text: arr.slice(start, end+1),
+      color: 'white'
+    });
+    spans.push({
+      text: arr.slice(end+1, arr.length),
+      color: color
+    });
   }
 
-  spans.forEach(function(string, i) {
-    var span = document.createElement('span'),
-        text = document.createTextNode(formatRoundFrac(string));
-    if (i == 1) span.style.color = 'white';
-    else        span.style.color = color;
+  spans.forEach(function(s) {
+    var span = document.createElement('span');
+    var txt;
+    switch (typeof s.text) {
+      case 'string': txt = s.text; break;
+      case 'number': txt = roundFrac(s.text); break;
+      case 'object': txt = formatRoundFrac(s.text); break;
+    }
+    var text = document.createTextNode(txt);
+    span.style.color = s.color;
     span.appendChild(text);
     cons.appendChild(span);
   });
@@ -56,10 +93,12 @@ function found(src, item) {
   return src.indexOf(item) != -1;
 }
 
-function getOccurrences(string, regex) {
-  regex = new RegExp(regex, 'g');
-  if (string.match(regex))
-    return string.match(regex).length;
-  else
-    return 0;
+function getOccurrences(arr, match) {
+  return arr.filter(function(elem) {
+    return elem === match;
+  });
+}
+
+function countOccurrences(arr, match) {
+  return getOccurrences(arr, match).length;
 }

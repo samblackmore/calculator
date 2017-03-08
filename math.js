@@ -3,7 +3,8 @@ function solve(arr) {
   arr = solver(arr, '*');
   arr = solver(arr, '/');
   arr = solver(arr, /\+|-/);
-  return arr.toString();
+  if (!arr.length) return 0;
+  return arr;
 }
 
 // Evaluate all occurrences of given operator
@@ -44,8 +45,7 @@ function evaluate(operator, lhs, rhs) {
 
 // Takes a string and returns an array where each element is a number or an operator
 function parseFormula(string) {
-  if (typeof string === 'number' || !string.length)
-    return string;
+  if (!string) return [];
   var result = [string.charAt(0)];
   for (var i = 1; i < string.length; i++) {
     var char = string.charAt(i);
@@ -61,54 +61,45 @@ function parseFormula(string) {
   });
 }
 
-// Returns whether there is an open bracket followed by a close
-function bracketsToParse(string) {
-  var open = false;
-  for (var i = 0; i < string.length; i++) {
-    var c = string.charAt(i);
-    if (c === '(') open = true;
-    if (c === ')' && open) return true;
+// Returns location of first pair of brackets
+function findBrackets(arr) {
+  var open;
+  for (var i = 0; i < arr.length; i++) {
+    var elem = arr[i];
+    if (elem === '(') open = i;
+    if (elem === ')' && open) return [open, i];
   }
   return false;
 }
 
-function parseBrackets(string) {
+function parseBrackets(arr) {
   // Before starting, check equal number of brackets
-  if (getOccurrences(string, /\(/) !== getOccurrences(string, /\)/))
+  if (countOccurrences(arr, '(') !== countOccurrences(arr, ')'))
     throw {
       name: 'UnequalBracketsError',
       message: 'Please provide an equal number of opening and closing brackets'
     }
-  var open;
-  while (bracketsToParse(string)) {
-    for (var i = 0; i < string.length; i++) {
-      var char = string.charAt(i);
-      if (char === '(') open = i;
-      if (char === ')' && open) {
-        var formula = string.slice(open+1, i),        // String between brackets
-            unsolved = '(' + formula + ')';
-        if (!formula) {                               // Handle empty brackets
-          formula = '0';
-          unsolved = '(0)';
-          string = string.replace('()', '(0)');
-        }
-        log(string, cConsoleDim, unsolved);
-        var solution = solve(parseFormula(formula));      // Solve it
-        string = string.replace(unsolved, solution);  // Insert into main string
-        log(string, cConsoleDim, solution);
-        break;
-      }
-    }
+
+  while (findBrackets(arr)) {
+    var open = findBrackets(arr)[0],
+        close = findBrackets(arr)[1],
+        formula = arr.slice(open+1, close),     // Elements between brackets
+        lhs = arr.slice(0, open),               // Elements outside left
+        rhs = arr.slice(close+1, arr.length);   // Elements outside right
+    log(arr, cConsoleDim, open, close);         // Log before solve
+    var solution = solve(formula);              // Solve it
+    arr = lhs.concat(solution).concat(rhs);     // Replace brackets with solution
+    log(arr, cConsoleDim, lhs.length);          // Log solution
   }
   // If brackets still found after solving
-  if (found(string, '(') || found(string, ')'))
+  if (countOccurrences(arr, '(') || countOccurrences(arr, ')'))
     throw {
       name: 'BracketsNotClosedError',
       message: "Remaining brackets didn't make sense"
     }
   // Success
-  log('=' + solve(parseFormula(string)), 'white');
-  return solve(parseFormula(string));
+  //log('=' + solve(arr), 'white');
+  return solve(arr);
 }
 
 function isOperator(char) {
