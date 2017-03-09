@@ -75,24 +75,14 @@ function findBrackets(arr) {
   for (var i = 0; i < arr.length; i++) {
     var elem = arr[i];
     if (elem === '(') open = i;
-    if (elem === ')' && open) return [open, i];
+    if (elem === ')' && open !== undefined) return [open, i];
   }
   return false;
 }
 
 function parseBrackets(arr) {
-  // Before starting, check equal number of brackets
-  if (countOccurrences(arr, '(') !== countOccurrences(arr, ')'))
-    throw {
-      name: 'UnequalBracketsError',
-      message: 'Please provide an equal number of opening and closing brackets'
-    }
-
-  if (found(operators, arr[arr.length-1]))
-    throw {
-      name: 'EndWithOperatorError',
-      message: 'Formula ends with an operator :('
-    }
+  checkEqualBrackets(arr);
+  checkEndWithOperator(arr);
 
   while (findBrackets(arr)) {
     var open = findBrackets(arr)[0],
@@ -100,6 +90,8 @@ function parseBrackets(arr) {
         formula = arr.slice(open+1, close),     // Elements between brackets
         lhs = arr.slice(0, open),               // Elements outside left
         rhs = arr.slice(close+1, arr.length);   // Elements outside right
+
+    checkEndWithOperator(formula);
     log(arr, cConsoleDim, open, close);         // Log before solve
     var solution = solve(formula);              // Solve it
     arr = lhs.concat(solution).concat(rhs);     // Replace brackets with solution
@@ -141,4 +133,23 @@ function roundFrac(num) {
    */
    var places = 1000;
    return parseInt(num * places + 0.5) / places;
+}
+
+
+// Exceptions
+
+function checkEqualBrackets(arr) {
+  if (countOccurrences(arr, '(') !== countOccurrences(arr, ')'))
+    throw {
+      name: 'UnequalBracketsError',
+      message: 'Please provide an equal number of opening and closing brackets'
+    }
+}
+
+function checkEndWithOperator(arr) {
+  if (found(operators, arr[arr.length-1]))
+    throw {
+      name: 'EndWithOperatorError',
+      message: 'Formula ends with an operator'
+    }
 }
