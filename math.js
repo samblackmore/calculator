@@ -6,7 +6,7 @@ function solve(arr) {
   arr = solver(arr, '/');
   arr = solver(arr, ['+', '-']);
   if (!arr.length) return 0;
-  return arr;
+  return arr[0];
 }
 
 // Evaluate all occurrences of given operator
@@ -85,21 +85,27 @@ function parseBrackets(arr) {
   checkNotEndWithOperator(arr);
 
   while (findBrackets(arr)) {
-    var open = findBrackets(arr)[0],
-        close = findBrackets(arr)[1],
-        formula = arr.slice(open+1, close),     // Elements between brackets
-        lhs = arr.slice(0, open),               // Elements outside left
-        rhs = arr.slice(close+1, arr.length);   // Elements outside right
+    console.log(arr);
+    var open = findBrackets(arr)[0];
+    var close = findBrackets(arr)[1];
+    var preceding = arr[open-1];
+    var formula = arr.slice(open+1, close);         // Elements between brackets
 
     checkNotEndWithOperator(formula);
-    log(arr, cConsoleDim, open, close);         // Log before solve
-    var solution = solve(formula);              // Solve it
-    arr = lhs.concat(solution).concat(rhs);     // Replace brackets with solution
-    log(arr, cConsoleDim, lhs.length);          // Log solution
+
+    if (isNumber(preceding) || preceding === ')') {
+      arr.splice(open, 0, '*');
+      open++; close++;                              // Shift after inserting *
+    }
+
+    log(arr, cConsoleDim, open, close);             // Log before solve
+    var solution = solve(formula);                  // Solve it
+    arr.splice(open, formula.length+2, solution);   // +2 accounts for brackets
+    log(arr, cConsoleDim, open);                    // Log solution
   }
   checkBracketsValid(arr);
   // Success
-  //log('=' + solve(arr), 'white');
+  console.log(arr);
   return solve(arr);
 }
 
