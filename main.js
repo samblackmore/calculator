@@ -5,11 +5,9 @@ var cConsoleDim = '#afcfaf',
     brackets = ['(', ')'],
     decimal = '.',
     solved = false,
-    buttons = numbers.concat(operators).concat(brackets);
-
-buttons.push(decimal);
-buttons.push('C');
-buttons.push('=');
+    buttons = numbers.concat(operators).concat(brackets).concat(decimal).concat('C').concat('='),
+    cons = document.getElementById('console'),
+    display = document.getElementById('display');
 
 // Add buttons to calculator
 buttons.forEach(function(value) {
@@ -32,17 +30,23 @@ testInputs.forEach(function(value) {
   container.appendChild(button);
 });
 
+document.onkeypress = function(e) {
+  var val = String.fromCharCode(e.which);
+  if (buttons.indexOf(val) !== -1) buttonClick(val);
+  if (e.which === 13) buttonClick('=');
+}
+document.onkeydown = function(e) {
+  if (e.which === 46) buttonClick('C');
+}
+
 function testClick(value) {
-  var cons = document.getElementById('console');
-  var display = document.getElementById('display');
   cons.innerHTML = 'press equals';
   display.innerHTML = value;
   solved = false;
 }
 
 function buttonClick(value) {
-  var cons = document.getElementById('console');
-  var formula = document.getElementById('display').textContent;
+  var formula = display.textContent;
 
   if (solved) {
     formula = '0';
