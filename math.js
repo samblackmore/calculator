@@ -82,7 +82,7 @@ function findBrackets(arr) {
 
 function parseBrackets(arr) {
   checkEqualBrackets(arr);
-  checkEndWithOperator(arr);
+  checkNotEndWithOperator(arr);
 
   while (findBrackets(arr)) {
     var open = findBrackets(arr)[0],
@@ -91,18 +91,13 @@ function parseBrackets(arr) {
         lhs = arr.slice(0, open),               // Elements outside left
         rhs = arr.slice(close+1, arr.length);   // Elements outside right
 
-    checkEndWithOperator(formula);
+    checkNotEndWithOperator(formula);
     log(arr, cConsoleDim, open, close);         // Log before solve
     var solution = solve(formula);              // Solve it
     arr = lhs.concat(solution).concat(rhs);     // Replace brackets with solution
     log(arr, cConsoleDim, lhs.length);          // Log solution
   }
-  // If brackets still found after solving
-  if (countOccurrences(arr, '(') || countOccurrences(arr, ')'))
-    throw {
-      name: 'BracketsNotClosedError',
-      message: "Remaining brackets didn't make sense"
-    }
+  checkBracketsValid(arr);
   // Success
   //log('=' + solve(arr), 'white');
   return solve(arr);
@@ -146,10 +141,18 @@ function checkEqualBrackets(arr) {
     }
 }
 
-function checkEndWithOperator(arr) {
+function checkNotEndWithOperator(arr) {
   if (found(operators, arr[arr.length-1]))
     throw {
       name: 'EndWithOperatorError',
       message: 'Formula ends with an operator'
+    }
+}
+
+function checkBracketsValid(arr) {
+  if (!findBrackets(arr) && (countOccurrences(arr, '(') || countOccurrences(arr, ')')))
+    throw {
+      name: 'BracketsNotValidError',
+      message: 'Brackets closed without being opened'
     }
 }
