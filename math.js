@@ -1,16 +1,28 @@
+var cConsoleDim = '#afcfaf';
 var operators = ['*','/','+','-'];
+var util = require('./util');
+var found = util.found;
+var log = util.found;
+var countOccurrences = util.countOccurrences;
+var findCommonElement = util.findCommonElement;
+
+module.exports = solve;
+
+function solve(string) {
+  return parseBrackets(parseFormula(string));
+}
 
 // Solve each operator in order
-function solve(arr) {
-  arr = solver(arr, '*');
-  arr = solver(arr, '/');
-  arr = solver(arr, ['+', '-']);
+function solveOperators(arr) {
+  arr = solveOperator(arr, '*');
+  arr = solveOperator(arr, '/');
+  arr = solveOperator(arr, ['+', '-']);
   if (!arr.length) return 0;
   return arr[0];
 }
 
 // Evaluate all occurrences of given operator
-function solver(arr, operator) {
+function solveOperator(arr, operator) {
   while (found(arr, operator)) {
     var pos;
     if (operator instanceof Object) {             // If array of operators
@@ -99,14 +111,14 @@ function parseBrackets(arr) {
     }
 
     log(arr, cConsoleDim, open, close);             // Log before solve
-    var solution = solve(formula);                  // Solve it
+    var solution = solveOperators(formula);         // Solve it
     arr.splice(open, formula.length+2, solution);   // +2 accounts for brackets
     log(arr, cConsoleDim, open);                    // Log solution
   }
   checkBracketsValid(arr);
   // Success
   console.log(arr);
-  return solve(arr);
+  return solveOperators(arr);
 }
 
 function isOperator(char) {

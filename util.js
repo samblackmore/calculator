@@ -1,3 +1,11 @@
+module.exports = {
+  log: log,
+  found: found,
+  findCommonElement: findCommonElement,
+  getOccurrences: getOccurrences,
+  countOccurrences: countOccurrences
+}
+
 // Takes an array and outputs a string where numbers are rounded
 function formatRoundFrac(arr) {
   return arr.map(function(elem) {

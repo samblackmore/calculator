@@ -1,4 +1,5 @@
 var testInputs = [
+  '123',
   '1+2',
   '1+2+',
   '1/0',
@@ -22,3 +23,12 @@ var testInputs = [
   '()()()()()()()()',
   '1+2*(3-(1+2-(3/4)+(4/5+(5/6+6/7))/8))'
 ]
+
+var solve = require('./math');
+
+var assert = require('assert');
+  describe('#solve()', function() {
+    it('should be able to add values', function() {
+      assert.equal(3, solve('1+2'));
+    });
+});
