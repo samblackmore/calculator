@@ -40,6 +40,9 @@ document.onkeydown = function(e) {
 }
 
 function testClick(value) {
+  // Take focus away from the clicked button
+  var dummy = document.getElementById('dummyFocus');
+  dummy.focus(); dummy.blur();
   cons.innerHTML = 'press equals';
   display.innerHTML = value;
   solved = false;
