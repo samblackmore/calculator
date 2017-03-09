@@ -32,7 +32,7 @@ testInputs.forEach(function(value) {
 
 document.onkeypress = function(e) {
   var val = String.fromCharCode(e.which);
-  if (buttons.indexOf(val) !== -1) buttonClick(val);
+  if (found(buttons, val)) buttonClick(val);
   if (e.which === 13) buttonClick('=');
 }
 document.onkeydown = function(e) {

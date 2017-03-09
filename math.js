@@ -1,3 +1,5 @@
+var operators = ['*','/','+','-'];
+
 // Solve each operator in order
 function solve(arr) {
   arr = solver(arr, '*');
@@ -84,6 +86,12 @@ function parseBrackets(arr) {
     throw {
       name: 'UnequalBracketsError',
       message: 'Please provide an equal number of opening and closing brackets'
+    }
+
+  if (found(operators, arr[arr.length-1]))
+    throw {
+      name: 'EndWithOperatorError',
+      message: 'Formula ends with an operator :('
     }
 
   while (findBrackets(arr)) {
