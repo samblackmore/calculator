@@ -20,13 +20,13 @@ function log(arr, color, start=null, end=null) {
   // If no highlighting
   if (start === null)
     spans.push({
-        text: arr.join(''),
+        text: formatRoundFrac(arr),
         color: color
       });
   // If highlighting one element
   else if (end === null) {
     spans.push({
-      text: arr.slice(0, start).join(''),
+      text: formatRoundFrac(arr.slice(0, start)),
       color: color
     });
     spans.push({
@@ -34,22 +34,22 @@ function log(arr, color, start=null, end=null) {
       color: 'white'
     });
     spans.push({
-      text: arr.slice(start+1, arr.length),
+      text: formatRoundFrac(arr.slice(start+1, arr.length)),
       color: color
     });
   }
   // If highlighting a range
   else {
     spans.push({
-      text: arr.slice(0, start).join(''),
+      text: formatRoundFrac(arr.slice(0, start)),
       color: color
     });
     spans.push({
-      text: arr.slice(start, end+1),
+      text: formatRoundFrac(arr.slice(start, end+1)),
       color: 'white'
     });
     spans.push({
-      text: arr.slice(end+1, arr.length),
+      text: formatRoundFrac(arr.slice(end+1, arr.length)),
       color: color
     });
   }
