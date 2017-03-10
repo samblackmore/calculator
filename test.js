@@ -1,6 +1,10 @@
 var solve = require('./math');
-
 var assert = require('assert');
+
+var fudge = 0.0000000000000001;
+var third = 0.333333333333333333;
+var twoThirds = 0.666666666666666667;
+
   describe('#solve()', function() {
     it('should do addition', function() {
       assert.equal(solve('1+2'), 3);                // Simple test
@@ -26,4 +30,34 @@ var assert = require('assert');
       assert.equal(solve('20000/5000'), 4);         // Big numbers
       assert.equal(solve('0.03/0.02'), 1.5);        // Floats
     });
+  it('should respect the order of operations', function() {
+    // Plus first
+    assert.equal(solve('1+2-3*4/5'), 0.6 + fudge);
+    assert.equal(solve('1+2-3/4*5'), -0.75);
+    assert.equal(solve('1+2*3-4/5'), 6.2);
+    assert.equal(solve('1+2*3/4-5'), -2.5);
+    assert.equal(solve('1+2/3*4-5'), -(1 + third));
+    assert.equal(solve('1+2/3-4*5'), -(18 + third));
+    // Minus first
+    assert.equal(solve('1-2+3*4/5'), 1.4);
+    assert.equal(solve('1-2+3/4*5'), 2.75);
+    assert.equal(solve('1-2*3+4/5'), -4.2);
+    assert.equal(solve('1-2*3/4+5'), 4.5);
+    assert.equal(solve('1-2/3+4*5'), 20 + third);
+    assert.equal(solve('1-2/3*4+5'), 3 + third);
+    // Times first
+    assert.equal(solve('1*2+3-4/5'), 4.2);
+    assert.equal(solve('1*2+3/4-5'), -2.25);
+    assert.equal(solve('1*2-3+4/5'), -0.2);
+    assert.equal(solve('1*2-3/4+5'), 6.25);
+    assert.equal(solve('1*2/3+4-5'), -third);
+    assert.equal(solve('1*2/3-4+5'), 1 + twoThirds);
+    // Divide first
+    assert.equal(solve('1/2+3-4*5'), -16.5);
+    assert.equal(solve('1/2+3*4-5'), 7.5);
+    assert.equal(solve('1/2*3+4-5'), 0.5);
+    assert.equal(solve('1/2*3-4+5'), 2.5);
+    assert.equal(solve('1/2-3+4*5'), 17.5);
+    assert.equal(solve('1/2-3*4+5'), -6.5);
+  });
 });
