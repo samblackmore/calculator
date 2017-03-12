@@ -78,7 +78,7 @@ describe('#solve()', function() {
     assert.equal(solve('2(3+4)'), 14);
     assert.equal(solve('(3+4)2'), 14);
     assert.equal(solve('(2)(3)'), 6);
-    assert.equal(solve('((2)(3))(4)'), 6);
+    assert.equal(solve('((2)(3))(4)'), 24);
   });
 
   it('should handle valid brackets', function() {

@@ -117,6 +117,7 @@ function parseBrackets(arr) {
     var open = findBrackets(arr)[0];
     var close = findBrackets(arr)[1];
     var preceding = arr[open-1];
+    var following = arr[close+1];
     var formula = arr.slice(open+1, close);         // Elements between brackets
 
     checkNotEndWithOperator(formula);
@@ -125,6 +126,9 @@ function parseBrackets(arr) {
       arr.splice(open, 0, '*');
       open++; close++;                              // Shift after inserting *
     }
+
+    if (isNumber(following))
+      arr.splice(close+1, 0, '*');
 
     log(arr, cConsoleDim, open, close);             // Log before solve
     var solution = solveOperators(formula);         // Solve it
