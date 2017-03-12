@@ -1,6 +1,7 @@
 var assert = require('assert');
 var solve = require('./solve');
 var errors = require('./error');
+var roundPlaces = require('./math').roundPlaces;
 var UnequalBracketsError = errors.UnequalBracketsError;
 var EndWithOperatorError = errors.EndWithOperatorError;
 var BracketsNotValidError = errors.BracketsNotValidError;
@@ -48,22 +49,22 @@ describe('#solve()', function() {
     assert.equal(solve('1+2-3/4*5'), -0.75);
     assert.equal(solve('1+2*3-4/5'), 6.2);
     assert.equal(solve('1+2*3/4-5'), -2.5);
-    assert.equal(solve('1+2/3*4-5'), -(1 + third));
-    assert.equal(solve('1+2/3-4*5'), -(18 + third));
+    assert.equal(roundPlaces(solve('1+2/3*4-5'), 7), roundPlaces(-(1 + third), 7));
+    assert.equal(roundPlaces(solve('1+2/3-4*5'), 7), roundPlaces(-(18 + third), 7));
     // Minus first
     assert.equal(solve('1-2+3*4/5'), 1.4);
     assert.equal(solve('1-2+3/4*5'), 2.75);
     assert.equal(solve('1-2*3+4/5'), -4.2);
     assert.equal(solve('1-2*3/4+5'), 4.5);
-    assert.equal(solve('1-2/3+4*5'), 20 + third);
-    assert.equal(solve('1-2/3*4+5'), 3 + third);
+    assert.equal(roundPlaces(solve('1-2/3+4*5'), 7), roundPlaces(20 + third, 7));
+    assert.equal(roundPlaces(solve('1-2/3*4+5'), 7), roundPlaces(3 + third, 7));
     // Times first
     assert.equal(solve('1*2+3-4/5'), 4.2);
     assert.equal(solve('1*2+3/4-5'), -2.25);
     assert.equal(solve('1*2-3+4/5'), -0.2);
     assert.equal(solve('1*2-3/4+5'), 6.25);
-    assert.equal(solve('1*2/3+4-5'), -third);
-    assert.equal(solve('1*2/3-4+5'), 1 + twoThirds);
+    assert.equal(roundPlaces(solve('1*2/3+4-5'), 7), roundPlaces(-third, 7));
+    assert.equal(roundPlaces(solve('1*2/3-4+5'), 7), roundPlaces(1 + twoThirds, 7));
     // Divide first
     assert.equal(solve('1/2+3-4*5'), -16.5);
     assert.equal(solve('1/2+3*4-5'), 7.5);
@@ -88,10 +89,10 @@ describe('#solve()', function() {
     assert.equal(solve('(1-2)*(3+4)'), -7);
     assert.equal(solve('(1-2)/(3+4)'), -0.142857143);
     assert.equal(solve('(1-2)(3+4)'), -7);
-    assert.equal(solve('2*(3/(1-(5)/6)+4)'), 44);
+    assert.equal(roundPlaces(solve('2*(3/(1-(5)/6)+4)'), 6), 44);
     assert.equal(solve('2*(3/(1-(5-2)/6)+4)'), 20);
-    assert.equal(solve('2*(3/(1-2(5)/6)+4)'), -1);
-    assert.equal(solve('2*(3/(1-(2)(5)/6)+4)'), -1);
+    assert.equal(roundPlaces(solve('2*(3/(1-2(5)/6)+4)'), 7), -1);
+    assert.equal(roundPlaces(solve('2*(3/(1-(2)(5)/6)+4)'), 7), -1);
     assert.equal(solve('1-2*(3-(1+2-(3/4)+(4/5+(5/6+6/7))/8))'), 0.122619048);
   });
 
