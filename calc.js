@@ -1,3 +1,10 @@
+module.exports = replaceLastChar;
+
+var decimal = require('./constants').decimal;
+var myMath = require('./math');
+var isNumber = myMath.isNumber;
+var isOperator = myMath.isOperator;
+
 // Returns whether the user is currently typing a decimal
 function inDecimal(string) {
   for (var i = string.length - 1; i >= 0; i--) {

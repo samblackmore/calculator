@@ -1,132 +1,33 @@
-var operators = ['*','/','+','-'];
-
-// Solve each operator in order
-function solve(arr) {
-  arr = solver(arr, '*');
-  arr = solver(arr, '/');
-  arr = solver(arr, ['+', '-']);
-  if (!arr.length) return 0;
-  return arr[0];
+module.exports = {
+  isNumber: isNumber,
+  isOperator: isOperator,
+  toNumber: toNumber,
+  roundFrac: roundFrac
 }
 
-// Evaluate all occurrences of given operator
-function solver(arr, operator) {
-  while (found(arr, operator)) {
-    var pos;
-    if (operator instanceof Object) {             // If array of operators
-      var foundOperator = findCommonElement(arr, operator);
-      pos = arr.indexOf(foundOperator);
-    } else pos = arr.indexOf(operator);
-
-    log(arr, cConsoleDim, pos);
-
-    arr[pos] = evaluate(arr[pos], arr[pos-1], arr[pos+1]);
-    delete arr[pos-1];
-    delete arr[pos+1];
-
-    var copy = arr.slice('');
-    copy.unshift('=');
-    copy = copy.filter(function(elem) {
-      return elem != undefined;
-    });
-
-    log(copy, cConsoleDim, pos);
-
-    arr = arr.filter(function(elem) {
-      return elem != undefined;
-    });
-  }
-  return arr;
-}
-
-// Does the math
-function evaluate(operator, lhs, rhs) {
-  lhs = toNumber(lhs);
-  rhs = toNumber(rhs);
-  switch (operator) {
-    case '*': return lhs * rhs;
-    case '/': return lhs / rhs;
-    case '+': return lhs + rhs;
-    case '-': return lhs - rhs;
-  }
-}
-
-// Takes a string and returns an array where each element is a number or an operator
-function parseFormula(string) {
-  if (!string) return [];
-  var result = [string.charAt(0)];
-  for (var i = 1; i < string.length; i++) {
-    var char = string.charAt(i);
-    var last = string.charAt(i-1);
-    if ((char === '.' || isNumber(char)) && (last === '.' || isNumber(last)))
-      result[result.length-1] += char;
-    else result.push(char);
-  }
-  return result.map(function(elem) {
-    if (isNumber(elem))
-      return toNumber(elem);
-    return elem;
-  });
-}
-
-// Returns location of first pair of brackets
-function findBrackets(arr) {
-  var open;
-  for (var i = 0; i < arr.length; i++) {
-    var elem = arr[i];
-    if (elem === '(') open = i;
-    if (elem === ')' && open !== undefined) return [open, i];
-  }
-  return false;
-}
-
-function parseBrackets(arr) {
-  checkEqualBrackets(arr);
-  checkNotEndWithOperator(arr);
-
-  while (findBrackets(arr)) {
-    console.log(arr);
-    var open = findBrackets(arr)[0];
-    var close = findBrackets(arr)[1];
-    var preceding = arr[open-1];
-    var formula = arr.slice(open+1, close);         // Elements between brackets
-
-    checkNotEndWithOperator(formula);
-
-    if (isNumber(preceding) || preceding === ')') {
-      arr.splice(open, 0, '*');
-      open++; close++;                              // Shift after inserting *
-    }
-
-    log(arr, cConsoleDim, open, close);             // Log before solve
-    var solution = solve(formula);                  // Solve it
-    arr.splice(open, formula.length+2, solution);   // +2 accounts for brackets
-    log(arr, cConsoleDim, open);                    // Log solution
-  }
-  checkBracketsValid(arr);
-  // Success
-  console.log(arr);
-  return solve(arr);
-}
-
-function isOperator(char) {
-  return found(operators, char);
-}
+var constants = require('./constants');
+var util = require('./util');
+var found = util.found;
 
 function isNumber(string) {
   return !isNaN(parseFloat(string));
 }
 
+function isOperator(char) {
+  return found(constants.operators, char);
+}
+
 function toNumber(n) {
   if (typeof n === 'number')
     return n;
-  if (found(n, '.'))
+  if (found(n, constants.decimal))
     return parseFloat(n);
   return parseInt(n);
 }
 
 function roundFrac(num) {
    /*
+   Proof:
    1.234 * 100  = 123.4
    123.4 + 0.5  = 123.9
    123.9 to int = 123
@@ -134,31 +35,4 @@ function roundFrac(num) {
    */
    var places = 1000;
    return parseInt(num * places + 0.5) / places;
-}
-
-
-// Exceptions
-
-function checkEqualBrackets(arr) {
-  if (countOccurrences(arr, '(') !== countOccurrences(arr, ')'))
-    throw {
-      name: 'UnequalBracketsError',
-      message: 'Please provide an equal number of opening and closing brackets'
-    }
-}
-
-function checkNotEndWithOperator(arr) {
-  if (found(operators, arr[arr.length-1]))
-    throw {
-      name: 'EndWithOperatorError',
-      message: 'Formula ends with an operator'
-    }
-}
-
-function checkBracketsValid(arr) {
-  if (!findBrackets(arr) && (countOccurrences(arr, '(') || countOccurrences(arr, ')')))
-    throw {
-      name: 'BracketsNotValidError',
-      message: 'Brackets closed without being opened'
-    }
 }
