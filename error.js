@@ -36,11 +36,3 @@ function BracketsEmptyError(message) {
 }
 BracketsEmptyError.prototype = Object.create(Error.prototype);
 BracketsEmptyError.prototype.constructor = BracketsEmptyError;
-
-function NoArgumentsError(message) {
-  this.name = 'NoArgumentsError';
-  this.message = message || 'Operator has no arguments to operate on';
-  this.stack = (new Error()).stack;
-}
-NoArgumentsError.prototype = Object.create(Error.prototype);
-NoArgumentsError.prototype.constructor = NoArgumentsError;

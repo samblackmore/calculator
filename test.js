@@ -124,16 +124,14 @@ describe('#solve()', function() {
 
   it('should not accept formulas ending with an operator', function() {
     var e = EndWithOperatorError;
+    // No numbers
+    assert.throws(function() {solve('+')}, e);
+    assert.throws(function() {solve('(*)')}, e);
+    assert.throws(function() {solve('(+)(-)(*)(/)')}, e);
+    // With numbers
     assert.throws(function() {solve('1+')}, e);
     assert.throws(function() {solve('1+2*')}, e);
     assert.throws(function() {solve('(1+2*)')}, e);
     assert.throws(function() {solve('(1*2)(1+2*)')}, e);
-  });
-
-  it('should not accept an operator with no arguments', function() {
-    var e = NoArgumentsError;
-    assert.throws(function() {solve('+')}, e);
-    assert.throws(function() {solve('(*)')}, e);
-    assert.throws(function() {solve('(+)(-)(*)(/)')}, e);
   });
 });
