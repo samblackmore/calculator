@@ -19,6 +19,10 @@ function formatRoundFrac(arr) {
 
 // Log to the html console, highlight elements in white if provided (start & end)
 function log(arr, color, start=null, end=null) {
+
+  if (typeof document === 'undefined')  // Mocha tests have no document
+    return;
+
   var spans = [],
       br = document.createElement('br'),
       cons = document.getElementById('console');
