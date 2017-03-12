@@ -5,7 +5,6 @@ var UnequalBracketsError = errors.UnequalBracketsError;
 var EndWithOperatorError = errors.EndWithOperatorError;
 var BracketsNotValidError = errors.BracketsNotValidError;
 
-var fudge = 0.0000000000000001;
 var third = 0.333333333333333333;
 var twoThirds = 0.666666666666666667;
 
@@ -44,7 +43,7 @@ describe('#solve()', function() {
 
   it('should respect the order of operations', function() {
     // Plus first
-    assert.equal(solve('1+2-3*4/5'), 0.6 + fudge);
+    assert.equal(solve('1+2-3*4/5'), 0.6);
     assert.equal(solve('1+2-3/4*5'), -0.75);
     assert.equal(solve('1+2*3-4/5'), 6.2);
     assert.equal(solve('1+2*3/4-5'), -2.5);
@@ -74,25 +73,25 @@ describe('#solve()', function() {
   });
 
   it('should infer multiplication', function() {
-    assert.equal('2(3)', 6);
-    assert.equal('(3)2', 6);
-    assert.equal('2(3+4)', 14);
-    assert.equal('(3+4)2', 14);
-    assert.equal('(2)(3)', 6);
-    assert.equal('((2)(3))(4)', 6);
+    assert.equal(solve('2(3)'), 6);
+    assert.equal(solve('(3)2'), 6);
+    assert.equal(solve('2(3+4)'), 14);
+    assert.equal(solve('(3+4)2'), 14);
+    assert.equal(solve('(2)(3)'), 6);
+    assert.equal(solve('((2)(3))(4)'), 6);
   });
 
   it('should handle valid brackets', function() {
-    assert.equal('(1-2)+(3+4)', 6);
-    assert.equal('(1-2)-(3+4)', -8);
-    assert.equal('(1-2)*(3+4)', -7);
-    assert.equal('(1-2)/(3+4)', -0.142857143);
-    assert.equal('(1-2)(3+4)', -7);
-    assert.equal('2*(3/(1-(5)/6)+4', 44);
-    assert.equal('2*(3/(1-(5-2)/6)+4', 20);
-    assert.equal('2*(3/(1-2(5)/6)+4', -1);
-    assert.equal('2*(3/(1-(2)(5)/6)+4', -1);
-    assert.equal('1-2*(3-(1+2-(3/4)+(4/5+(5/6+6/7))/8))', 0.122619048);
+    assert.equal(solve('(1-2)+(3+4)'), 6);
+    assert.equal(solve('(1-2)-(3+4)'), -8);
+    assert.equal(solve('(1-2)*(3+4)'), -7);
+    assert.equal(solve('(1-2)/(3+4)'), -0.142857143);
+    assert.equal(solve('(1-2)(3+4)'), -7);
+    assert.equal(solve('2*(3/(1-(5)/6)+4)'), 44);
+    assert.equal(solve('2*(3/(1-(5-2)/6)+4)'), 20);
+    assert.equal(solve('2*(3/(1-2(5)/6)+4)'), -1);
+    assert.equal(solve('2*(3/(1-(2)(5)/6)+4)'), -1);
+    assert.equal(solve('1-2*(3-(1+2-(3/4)+(4/5+(5/6+6/7))/8))'), 0.122619048);
   });
 
   it('should not accept unequal numbers of brackets', function() {

@@ -1,5 +1,5 @@
 var myMath = require('./math');
-var roundFrac = myMath.roundFrac;
+var roundPlaces = myMath.roundPlaces;
 
 module.exports = {
   log: log,
@@ -10,9 +10,9 @@ module.exports = {
 }
 
 // Takes an array and outputs a string where numbers are rounded
-function formatRoundFrac(arr) {
+function formatRound(arr) {
   return arr.map(function(elem) {
-    if (typeof elem === 'number') return roundFrac(elem);
+    if (typeof elem === 'number') return roundPlaces(elem, 3);
     else return elem;
   }).join('');
 }
@@ -35,36 +35,36 @@ function log(arr, color, start=null, end=null) {
   // If no highlighting
   if (start === null)
     spans.push({
-        text: formatRoundFrac(arr),
+        text: formatRound(arr),
         color: color
       });
   // If highlighting one element
   else if (end === null) {
     spans.push({
-      text: formatRoundFrac(arr.slice(0, start)),
+      text: formatRound(arr.slice(0, start)),
       color: color
     });
     spans.push({
-      text: arr[start],
+      text: formatRound(arr.slice(start, start+1)),
       color: 'white'
     });
     spans.push({
-      text: formatRoundFrac(arr.slice(start+1, arr.length)),
+      text: formatRound(arr.slice(start+1, arr.length)),
       color: color
     });
   }
   // If highlighting a range
   else {
     spans.push({
-      text: formatRoundFrac(arr.slice(0, start)),
+      text: formatRound(arr.slice(0, start)),
       color: color
     });
     spans.push({
-      text: formatRoundFrac(arr.slice(start, end+1)),
+      text: formatRound(arr.slice(start, end+1)),
       color: 'white'
     });
     spans.push({
-      text: formatRoundFrac(arr.slice(end+1, arr.length)),
+      text: formatRound(arr.slice(end+1, arr.length)),
       color: color
     });
   }
@@ -74,8 +74,8 @@ function log(arr, color, start=null, end=null) {
     var txt;
     switch (typeof s.text) {
       case 'string': txt = s.text; break;
-      case 'number': txt = roundFrac(s.text); break;
-      case 'object': txt = formatRoundFrac(s.text); break;
+      case 'number': txt = roundPlaces(s.text); break;
+      case 'object': txt = formatRound(s.text); break;
     }
     var text = document.createTextNode(txt);
     span.style.color = s.color;

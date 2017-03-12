@@ -12,7 +12,7 @@ var found = util.found;
 var isNumber = math.isNumber;
 var toNumber = math.toNumber;
 var isOperator = math.isOperator;
-var roundFrac = math.roundFrac;
+var roundPlaces = math.roundPlaces;
 var countOccurrences = util.countOccurrences;
 var findCommonElement = util.findCommonElement;
 var UnequalBracketsError = errors.UnequalBracketsError;
@@ -64,15 +64,19 @@ function solveOperator(arr, operator) {
 
 // Does the math
 function evaluate(operator, lhs, rhs) {
-  if (typeof lhs === undefined) lhs = 0;
+  if (typeof lhs === 'undefined') lhs = 0;
+  if (typeof rhs === 'undefined') rhs = 0;
   lhs = toNumber(lhs);
   rhs = toNumber(rhs);
+  var r;
   switch (operator) {
-    case '*': return lhs * rhs;
-    case '/': return lhs / rhs;
-    case '+': return lhs + rhs;
-    case '-': return lhs - rhs;
+    case '*': r = lhs * rhs; break;
+    case '/': r = lhs / rhs; break;
+    case '+': r = lhs + rhs; break;
+    case '-': r = lhs - rhs; break;
   }
+  return roundPlaces(r, 9);
+  //return r;
 }
 
 // Takes a string and returns an array where each element is a number or an operator
