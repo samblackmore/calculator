@@ -1,3 +1,10 @@
+var testInputs = require('./tests');
+var replaceLastChar = require('./calc');
+var math = require('./math');
+var util = require('./util');
+var solve = require('./solve');
+var log = util.found;
+
 // Globals
 var cConsoleDim = '#afcfaf';
 var numbers = [0,1,2,3,4,5,6,7,8,9].map(function(n) {return String(n)}).reverse();
@@ -16,7 +23,9 @@ buttons.forEach(function(value) {
   var text = document.createTextNode(value);
   button.appendChild(text);
   button.className = 'button';
-  button.setAttribute('onclick', 'buttonClick("' + value + '")');
+  button.addEventListener('click', function() {
+    buttonClick(value)
+  });
   calculator.appendChild(button);
 });
 
@@ -26,7 +35,9 @@ testInputs.forEach(function(value) {
   var text = document.createTextNode(value);
   button.appendChild(text);
   button.className = 'test';
-  button.setAttribute('onclick', 'testClick("' + value + '")');
+  button.addEventListener('click', function() {
+    testClick(value)
+  });
   container.appendChild(button);
 });
 
@@ -65,7 +76,7 @@ function buttonClick(value) {
     try {
       cons.innerHTML = null;
       log(formula, cConsoleDim);
-      display.innerHTML = parseBrackets(parseFormula(formula));
+      display.innerHTML = solve(formula);
       solved = true;
     } catch (e) {
       cons.innerHTML += e.message;

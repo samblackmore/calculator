@@ -1,3 +1,6 @@
+var myMath = require('./math');
+var roundFrac = myMath.roundFrac;
+
 module.exports = {
   log: log,
   found: found,

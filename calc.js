@@ -1,8 +1,14 @@
+module.exports = replaceLastChar;
+
+var myMath = require('./math');
+var isNumber = myMath.isNumber;
+var isOperator = myMath.isOperator;
+
 // Returns whether the user is currently typing a decimal
 function inDecimal(string) {
   for (var i = string.length - 1; i >= 0; i--) {
     var c = string.charAt(i);
-    if (c === decimal) return true;
+    if (c === '.') return true;
     if (!isNumber(c)) return false;
   }
   return false;
