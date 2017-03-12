@@ -25,8 +25,7 @@ function solve(string) {
 
 // Solve each operator in order
 function solveOperators(arr) {
-  arr = solveOperator(arr, '*');
-  arr = solveOperator(arr, '/');
+  arr = solveOperator(arr, ['*', '/']);
   arr = solveOperator(arr, ['+', '-']);
   if (!arr.length) return 0;
   return arr[0];
