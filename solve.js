@@ -64,6 +64,7 @@ function solveOperator(arr, operator) {
 
 // Does the math
 function evaluate(operator, lhs, rhs) {
+  if (typeof lhs === undefined) lhs = 0;
   lhs = toNumber(lhs);
   rhs = toNumber(rhs);
   switch (operator) {
