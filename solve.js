@@ -15,6 +15,7 @@ var isOperator = math.isOperator;
 var roundPlaces = math.roundPlaces;
 var countOccurrences = util.countOccurrences;
 var findCommonElement = util.findCommonElement;
+var BracketsEmptyError = errors.BracketsEmptyError;
 var UnequalBracketsError = errors.UnequalBracketsError;
 var EndWithOperatorError = errors.EndWithOperatorError;
 var BracketsNotValidError = errors.BracketsNotValidError;
@@ -120,6 +121,7 @@ function parseBrackets(arr) {
     var following = arr[close+1];
     var formula = arr.slice(open+1, close);         // Elements between brackets
 
+    checkNotEmpty(formula);
     checkNotEndWithOperator(formula);
 
     if (isNumber(preceding) || preceding === ')') {
@@ -142,6 +144,12 @@ function parseBrackets(arr) {
 }
 
 // Exceptions
+
+function checkNotEmpty(arr) {
+  if (arr.length === 0) {
+    throw new BracketsEmptyError();
+  }
+}
 
 function checkEqualBrackets(arr) {
   if (countOccurrences(arr, '(') !== countOccurrences(arr, ')'))

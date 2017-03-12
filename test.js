@@ -4,6 +4,7 @@ var errors = require('./error');
 var UnequalBracketsError = errors.UnequalBracketsError;
 var EndWithOperatorError = errors.EndWithOperatorError;
 var BracketsNotValidError = errors.BracketsNotValidError;
+var BracketsEmptyError = errors.BracketsEmptyError;
 
 var third = 0.333333333333333333;
 var twoThirds = 0.666666666666666667;
@@ -106,13 +107,13 @@ describe('#solve()', function() {
   it('should not accept closing brackets without opening', function() {
     var e = BracketsNotValidError;
     assert.throws(function() {solve(')(')}, e);
-    assert.throws(function() {solve('))((())(')}, e);
+    assert.throws(function() {solve(')))))(((((')}, e);
     assert.throws(function() {solve('2)(')}, e);
     assert.throws(function() {solve('2*)(')}, e);
   });
 
   it('should not accept empty brackets', function() {
-    var e = BracketsNotValidError;
+    var e = BracketsEmptyError;
     assert.throws(function() {solve('()')}, e);
     assert.throws(function() {solve('(((((((())))))))')}, e);
     assert.throws(function() {solve('()()()()()()()()')}, e);

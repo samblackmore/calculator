@@ -1,7 +1,8 @@
 module.exports = {
   UnequalBracketsError: UnequalBracketsError,
   EndWithOperatorError: EndWithOperatorError,
-  BracketsNotValidError: BracketsNotValidError
+  BracketsNotValidError: BracketsNotValidError,
+  BracketsEmptyError: BracketsEmptyError
 }
 
 function EndWithOperatorError(message) {
