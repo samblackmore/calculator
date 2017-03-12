@@ -5,6 +5,10 @@ var found = util.found;
 var log = util.found;
 var countOccurrences = util.countOccurrences;
 var findCommonElement = util.findCommonElement;
+var errors = require('./error');
+var UnequalBracketsError = errors.UnequalBracketsError;
+var EndWithOperatorError = errors.EndWithOperatorError;
+var BracketsNotValidError = errors.BracketsNotValidError;
 
 module.exports = solve;
 
@@ -97,7 +101,7 @@ function parseBrackets(arr) {
   checkNotEndWithOperator(arr);
 
   while (findBrackets(arr)) {
-    console.log(arr);
+    //console.log(arr);
     var open = findBrackets(arr)[0];
     var close = findBrackets(arr)[1];
     var preceding = arr[open-1];
@@ -117,7 +121,7 @@ function parseBrackets(arr) {
   }
   checkBracketsValid(arr);
   // Success
-  console.log(arr);
+  //console.log(arr);
   return solveOperators(arr);
 }
 
@@ -153,24 +157,15 @@ function roundFrac(num) {
 
 function checkEqualBrackets(arr) {
   if (countOccurrences(arr, '(') !== countOccurrences(arr, ')'))
-    throw {
-      name: 'UnequalBracketsError',
-      message: 'Please provide an equal number of opening and closing brackets'
-    }
+    throw new UnequalBracketsError();
 }
 
 function checkNotEndWithOperator(arr) {
   if (found(operators, arr[arr.length-1]))
-    throw {
-      name: 'EndWithOperatorError',
-      message: 'Formula ends with an operator'
-    }
+    throw new EndWithOperatorError();
 }
 
 function checkBracketsValid(arr) {
   if (!findBrackets(arr) && (countOccurrences(arr, '(') || countOccurrences(arr, ')')))
-    throw {
-      name: 'BracketsNotValidError',
-      message: 'Brackets closed without being opened'
-    }
+    throw new BracketsNotValidError();
 }
