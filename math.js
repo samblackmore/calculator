@@ -5,22 +5,22 @@ module.exports = {
   roundFrac: roundFrac
 }
 
+var constants = require('./constants');
 var util = require('./util');
 var found = util.found;
-var operators = ['*','/','+','-'];
 
 function isNumber(string) {
   return !isNaN(parseFloat(string));
 }
 
 function isOperator(char) {
-  return found(operators, char);
+  return found(constants.operators, char);
 }
 
 function toNumber(n) {
   if (typeof n === 'number')
     return n;
-  if (found(n, '.'))
+  if (found(n, constants.decimal))
     return parseFloat(n);
   return parseInt(n);
 }

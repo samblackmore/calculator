@@ -1,20 +1,23 @@
-var testInputs = require('./tests');
-var replaceLastChar = require('./calc');
+// Imports
+var constants = require('./constants');
 var math = require('./math');
 var util = require('./util');
 var solve = require('./solve');
+var testInputs = require('./tests');
+var replaceLastChar = require('./calc');
 var log = util.found;
 
 // Globals
-var cConsoleDim = '#afcfaf';
-var numbers = [0,1,2,3,4,5,6,7,8,9].map(function(n) {return String(n)}).reverse();
-var operators = ['*','/','+','-'];
-var brackets = ['(', ')'];
-var decimal = '.';
 var solved = false;
-var buttons = numbers.concat(operators).concat(brackets).concat(decimal).concat('C').concat('=');
+var cConsoleDim = '#afcfaf';
 var cons = document.getElementById('console');
 var display = document.getElementById('display');
+var buttons = constants.numbers
+  .concat(constants.operators)
+  .concat(constants.brackets)
+  .concat(constants.decimal)
+  .concat(constants.clear)
+  .concat(constants.equals);
 
 // Add buttons to calculator
 buttons.forEach(function(value) {
@@ -44,10 +47,10 @@ testInputs.forEach(function(value) {
 document.onkeypress = function(e) {
   var val = String.fromCharCode(e.which);
   if (found(buttons, val)) buttonClick(val);
-  if (e.which === 13) buttonClick('=');
+  if (e.which === 13) buttonClick(constants.equals);
 }
 document.onkeydown = function(e) {
-  if (e.which === 46) buttonClick('C');
+  if (e.which === 46) buttonClick(constants.clear);
 }
 
 function testClick(value) {
@@ -69,10 +72,10 @@ function buttonClick(value) {
   }
 
   // If we pressed Clear...
-  if (value === 'C')
+  if (value === constants.clear)
     display.innerHTML = 0;
 
-  else if (value === '=') {
+  else if (value === constants.equals) {
     try {
       cons.innerHTML = null;
       log(formula, cConsoleDim);

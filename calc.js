@@ -1,5 +1,6 @@
 module.exports = replaceLastChar;
 
+var decimal = require('./constants').decimal;
 var myMath = require('./math');
 var isNumber = myMath.isNumber;
 var isOperator = myMath.isOperator;
@@ -8,7 +9,7 @@ var isOperator = myMath.isOperator;
 function inDecimal(string) {
   for (var i = string.length - 1; i >= 0; i--) {
     var c = string.charAt(i);
-    if (c === '.') return true;
+    if (c === decimal) return true;
     if (!isNumber(c)) return false;
   }
   return false;

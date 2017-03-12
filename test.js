@@ -1,5 +1,5 @@
-var solve = require('./math');
 var assert = require('assert');
+var solve = require('./solve');
 var errors = require('./error');
 var UnequalBracketsError = errors.UnequalBracketsError;
 var EndWithOperatorError = errors.EndWithOperatorError;

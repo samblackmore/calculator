@@ -3,9 +3,9 @@ module.exports = solve;
 var math = require('./math');
 var util = require('./util');
 var errors = require('./error');
+var constants = require('./constants');
 
 var cConsoleDim = '#afcfaf';
-var operators = ['*','/','+','-'];
 
 var log = util.log;
 var found = util.found;
@@ -48,7 +48,7 @@ function solveOperator(arr, operator) {
     delete arr[pos+1];
 
     var copy = arr.slice('');
-    copy.unshift('=');
+    copy.unshift(constants.equals);
     copy = copy.filter(function(elem) {
       return elem != undefined;
     });
@@ -81,7 +81,8 @@ function parseFormula(string) {
   for (var i = 1; i < string.length; i++) {
     var char = string.charAt(i);
     var last = string.charAt(i-1);
-    if ((char === '.' || isNumber(char)) && (last === '.' || isNumber(last)))
+    if ((char === constants.decimal || isNumber(char))
+    && (last === constants.decimal || isNumber(last)))
       result[result.length-1] += char;
     else result.push(char);
   }
@@ -140,7 +141,7 @@ function checkEqualBrackets(arr) {
 }
 
 function checkNotEndWithOperator(arr) {
-  if (found(operators, arr[arr.length-1]))
+  if (found(constants.operators, arr[arr.length-1]))
     throw new EndWithOperatorError();
 }
 
