@@ -8,8 +8,8 @@ var BracketsNotValidError = errors.BracketsNotValidError;
 var BracketsEmptyError = errors.BracketsEmptyError;
 
 var third = 0.333333333333333333;
-var twoThirds = 0.666666666666666667;
-var testAccuracy = 7;  // Number of decimal places tests should be accurate to
+var twoThirds = 0.666666666666666666;
+var testAccuracy = 10;  // Number of decimal places tests should be accurate to
 
 function test(str, num) {
   var solution = solve(str);
@@ -91,13 +91,13 @@ describe('#solve()', function() {
     test('(1-2)+(3+4)', 6);
     test('(1-2)-(3+4)', -8);
     test('(1-2)*(3+4)', -7);
-    test('(1-2)/(3+4)', -0.142857143);
+    test('(1-2)/(3+4)', -0.1428571429);
     test('(1-2)(3+4)', -7);
     test('2*(3/(1-(5)/6)+4)', 44);
     test('2*(3/(1-(5-2)/6)+4)', 20);
     test('2*(3/(1-2(5)/6)+4)', -1);
     test('2*(3/(1-(2)(5)/6)+4)', -1);
-    test('1-2*(3-(1+2-(3/4)+(4/5+(5/6+6/7))/8))', 0.122619048);
+    test('1-2*(3-(1+2-(3/4)+(4/5+(5/6+6/7))/8))', 0.1226190476);
   });
 
   it('should not accept unequal numbers of brackets', function() {
