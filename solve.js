@@ -21,7 +21,8 @@ var EndWithOperatorError = errors.EndWithOperatorError;
 var BracketsNotValidError = errors.BracketsNotValidError;
 
 function solve(string) {
-  return parseBrackets(parseFormula(string));
+  var solution = parseBrackets(parseFormula(string));
+  return roundPlaces(solution, 10); // Round to 10 dec places
 }
 
 // Solve each operator in order

@@ -17,9 +17,12 @@ function inDecimal(string) {
 
 // Returns whether or not to replace the last char with the current one
 function replaceLastChar(string, newChar) {
-  var lastCharPos = string.length - 1,
-      lastChar = string.charAt(lastCharPos),
-      penultimateChar = string.charAt(lastCharPos - 1);
+  var lastCharPos = string.length - 1;
+  var lastChar = string.charAt(lastCharPos);
+  var penultimateChar = string.charAt(lastCharPos - 1);
+
+  if (string === '0' && newChar !== decimal)
+    return true;
 
   // Operator followed by another operator - choose the latest
   if (isOperator(lastChar) && isOperator(newChar))

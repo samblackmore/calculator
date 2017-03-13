@@ -5,7 +5,8 @@ var util = require('./util');
 var solve = require('./solve');
 var testInputs = require('./tests');
 var replaceLastChar = require('./calc');
-var log = util.found;
+var log = util.log;
+var found = util.found;
 
 // Globals
 var solved = false;
@@ -66,9 +67,11 @@ function buttonClick(value) {
   var formula = display.textContent;
 
   if (solved) {
-    formula = '0';
-    cons.innerHTML = 'hi';
     solved = false;
+    if (!math.isOperator(value)) {
+      formula = '0';
+      cons.innerHTML = 'hi';
+    }
   }
 
   // If we pressed Clear...
