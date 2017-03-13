@@ -75,8 +75,7 @@ function evaluate(operator, lhs, rhs) {
     case '+': r = lhs + rhs; break;
     case '-': r = lhs - rhs; break;
   }
-  return roundPlaces(r, 9);
-  //return r;
+  return r;
 }
 
 // Takes a string and returns an array where each element is a number or an operator
