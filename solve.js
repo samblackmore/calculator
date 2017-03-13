@@ -21,7 +21,7 @@ var EndWithOperatorError = errors.EndWithOperatorError;
 var BracketsNotValidError = errors.BracketsNotValidError;
 
 function solve(string) {
-  var solution = parseBrackets(parseFormula(string));
+  var solution = solveBrackets(parseFormula(string));
   return roundPlaces(solution, 10); // Round to 10 dec places
 }
 
@@ -109,7 +109,7 @@ function findBrackets(arr) {
   return false;
 }
 
-function parseBrackets(arr) {
+function solveBrackets(arr) {
   checkEqualBrackets(arr);
   checkNotEndWithOperator(arr);
 
