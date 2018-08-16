@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/samblackmore/calculator/issues"
   },
-  "homepage": "https://github.com/samblackmore/calculator#readme"
+  "homepage": "https://github.com/samblackmore/calculator#readme",
+  "dependencies": {
+    "browserify": "^16.2.2"
+  }
 }
